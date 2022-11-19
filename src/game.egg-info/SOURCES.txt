@@ -1,0 +1,16 @@
+LICENSE
+README.md
+pyproject.toml
+src/__init__.py
+src/game/__init__.py
+src/game/abstract.py
+src/game/button.py
+src/game/game.py
+src/game/main.py
+src/game/main_menu.py
+src/game/objects.py
+src/game/settings.py
+src/game.egg-info/PKG-INFO
+src/game.egg-info/SOURCES.txt
+src/game.egg-info/dependency_links.txt
+src/game.egg-info/top_level.txt
