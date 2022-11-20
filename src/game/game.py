@@ -147,8 +147,8 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.OPTIONS_BACK.checkForInput(RULES_MOUSE_POS):
                         main_menu(SCREEN)
-                    # if self.OPTIONS_Shuffel.checkForInput(RULES_MOUSE_POS):
-                    #     main_menu(SCREEN)
+                    if self.OPTIONS_Shuffel.checkForInput(RULES_MOUSE_POS):
+                        self.reset()
 
                     # if self.OPTIONS_Shuffel.checkForInput(RULES_MOUSE_POS):
                     #     main_menu(SCREEN)
