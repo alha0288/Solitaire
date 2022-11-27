@@ -2,10 +2,10 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 [project]
-name = "game"
-version = "0.0.6"
+name = "solitaire_game"
+version = "0.0.2"
 authors = [
-  { name="Mohammad Khalil", email="khal0152@algonquinlive.com" },
+  { name="Safaa Alhawasli", email="alha0288@algonquinlive.com" },
 ]
 description = "Soitaire game package"
 readme = "README.md"
