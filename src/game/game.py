@@ -1,5 +1,7 @@
 import pygame
 import sys
+
+import self as self
 from objects import *
 from settings import Settings
 from pygame.locals import *
@@ -44,6 +46,7 @@ class DoubleClick:
 
 class Game:
     def __init__(self):
+        self.scoreValue = "0"
         self.OPTIONS_BACK = None
         pygame.init()  # start the game
         random.seed()  # randomly shuffle the cards
@@ -122,14 +125,19 @@ class Game:
             self.OPTIONS_BACK.changeColor(RULES_MOUSE_POS)
 
             self.OPTIONS_Shuffel = Button(image=None, pos=(285, 675),
-                                       text_input="Shuffel", font=self.get_font(25), base_color="#FFD700",
-                                       hovering_color="RED")
+                                          text_input="Shuffel", font=self.get_font(25), base_color="#FFD700",
+                                          hovering_color="RED")
             self.OPTIONS_Shuffel.changeColor(RULES_MOUSE_POS)
 
             self.OPTIONS_Score = Button(image=None, pos=(505, 675),
-                                       text_input="Your Score: ", font=self.get_font(25), base_color="#FFD700",
-                                       hovering_color="RED")
-            self.OPTIONS_Shuffel.changeColor(RULES_MOUSE_POS)
+                                        text_input="Your Score: ", font=self.get_font(25), base_color="#FFD700",
+                                        hovering_color="RED")
+            self.OPTIONS_Score.changeColor(RULES_MOUSE_POS)
+
+            self.Score = Button(image=None, pos=(600, 675),
+                                text_input=self.scoreValue, font=self.get_font(25), base_color="#FFD700",
+                                hovering_color="RED")
+            self.Score.changeColor(RULES_MOUSE_POS)
 
             if self.winCondition():
                 self.randomMotion(2)  # Move the piles around randomly if game has been won
@@ -149,9 +157,6 @@ class Game:
                         main_menu(SCREEN)
                     if self.OPTIONS_Shuffel.checkForInput(RULES_MOUSE_POS):
                         self.reset()
-
-                    # if self.OPTIONS_Shuffel.checkForInput(RULES_MOUSE_POS):
-                    #     main_menu(SCREEN)
 
                 # start a new game
                 if event.type == KEYUP and event.key == K_r:  ########################
@@ -175,6 +180,7 @@ class Game:
                             for pile in self.piles:
                                 if pile.validAddCards(self.move_pile.cards):
                                     selectedPile = pile
+                                    self.scoreValue = str(int(self.scoreValue) + 5)
                                     break
 
                             # If a valid pile is found, drop the cards there, otherwise return the cards
@@ -209,27 +215,26 @@ class Game:
             self.OPTIONS_BACK.update(SCREEN)
             self.OPTIONS_Shuffel.update(SCREEN)
             self.OPTIONS_Score.update(SCREEN)
+            self.Score.update(SCREEN)
             self.draw()
             pygame.display.flip()
 
     # When a double click occurs, try to put that card in the suit piles
     def onDoubleClick(self, event):
         clicked_pile = self.isClickedPile(event)
-
-    #
-    # if clicked_pile:
-    #     # onDoubleClick always returns only one card
-    #     card_taken = clicked_pile.onDoubleClick(event)
-    #     if card_taken:  # If a card is returned (double click was valid)
-    #         noPlace = True  # This card right now has no home in the Suit piles
-    #         for pile in self.piles[-4:]:  # Go through the four suit piles
-    #             # The False ensures that the card_taken does not have to contact the Suit piles
-    #             if pile.validAddCards(card_taken, False):
-    #                 pile.addCards(card_taken)
-    #                 noPlace = False
-    #                 break;
-    #         # If no suit pile has been found, return the card that was double-clicked
-    #         if noPlace: card_taken[0].pile.addCards(card_taken)
+        if clicked_pile:
+            # onDoubleClick always returns only one card
+            card_taken = clicked_pile.onDoubleClick(event)
+            if card_taken:  # If a card is returned (double click was valid)
+                noPlace = True  # This card right now has no home in the Suit piles
+                for pile in self.piles[-4:]:  # Go through the four suit piles
+                    # The False ensures that the card_taken does not have to contact the Suit piles
+                    if pile.validAddCards(card_taken, False):
+                        pile.addCards(card_taken)
+                        noPlace = False
+                    break
+                # If no suit pile has been found, return the card that was double-clicked
+                if noPlace: card_taken[0].pile.addCards(card_taken)
 
     # Draw is simple, just draw all the piles
     def draw(self):
